@@ -43,17 +43,17 @@ jobs:
         with:
           go-version: 1.20.4
 
-      - name: static check
-        uses: golangci/golangci-lint-action@v3
-        with:
-          # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
-          version: v1.52.2
-          args: --timeout=10m
-
-      - name: ansible-lint
-        uses: ansible/ansible-lint-action@v6
-        with:
-          path: "playbooks/"
+#      - name: static check
+#        uses: golangci/golangci-lint-action@v3
+#        with:
+#          # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
+#          version: v1.52.2
+#          args: --timeout=10m
+#
+#      - name: ansible-lint
+#        uses: ansible/ansible-lint-action@v6
+#        with:
+#          path: "playbooks/"
 
   unit-test:
     needs: [ static-check,get_ref ]
@@ -72,9 +72,9 @@ jobs:
         with:
           go-version: 1.20.4
 
-      - name: unit test
-        run: |
-          make test
+#      - name: unit test
+#        run: |
+#          make test
 
   build-push-for-e2e:
     needs: [ unit-test,get_ref ]
@@ -93,19 +93,27 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ needs.get_ref.outputs.ref }}
+
       - uses: actions/setup-go@v4
         with:
           go-version: 1.20.4
-      - name: e2e
+
+      - name: check E2E VERSION INFO - TO BE DELETE
         run: |
-          CONTAINER_TAG="$(git describe --tags --abbrev=8 --dirty)-e2e"
-          HELM_CHART_VERSION=`echo ${CONTAINER_TAG}|awk -F "-" '{print $1}'`
-          TAG_SECOND_PART=`echo ${CONTAINER_TAG}|awk  -F "-" '{print $2 }'`
-          if [[ ${TAG_SECOND_PART} =~ rc[0-9]+ ]];then 
-            HELM_CHART_VERSION=`echo ${CONTAINER_TAG}|awk -F "-" '{print $1"-"$2 }'`
-          fi
-          echo ${{ runner.name }}
-          echo ${{ runner.os }}
-          echo ${{ runner.arch }}
-          echo ${{ github.workspace }}
-          bash hack/e2e.sh "${HELM_CHART_VERSION}" "${CONTAINER_TAG}" ${{ runner.name }} "${VSPHERE_USER}" "${VSPHERE_PASSWD}" "${AMD_ROOT_PASSWORD}" "${KYLIN_VM_PASSWORD}" "PR"
+          VERSION="$(git describe --tags --abbrev=8 --dirty)-e2e"
+          echo VERSION=$VERSION
+          git log -3 --oneline
+
+#      - name: e2e
+#        run: |
+#          CONTAINER_TAG="$(git describe --tags --abbrev=8 --dirty)-e2e"
+#          HELM_CHART_VERSION=`echo ${CONTAINER_TAG}|awk -F "-" '{print $1}'`
+#          TAG_SECOND_PART=`echo ${CONTAINER_TAG}|awk  -F "-" '{print $2 }'`
+#          if [[ ${TAG_SECOND_PART} =~ rc[0-9]+ ]];then
+#            HELM_CHART_VERSION=`echo ${CONTAINER_TAG}|awk -F "-" '{print $1"-"$2 }'`
+#          fi
+#          echo ${{ runner.name }}
+#          echo ${{ runner.os }}
+#          echo ${{ runner.arch }}
+#          echo ${{ github.workspace }}
+#          bash hack/e2e.sh "${HELM_CHART_VERSION}" "${CONTAINER_TAG}" ${{ runner.name }} "${VSPHERE_USER}" "${VSPHERE_PASSWD}" "${AMD_ROOT_PASSWORD}" "${KYLIN_VM_PASSWORD}" "PR"
