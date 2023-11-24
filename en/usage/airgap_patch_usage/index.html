@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/kubean_logo_1.svg">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.11">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.fad675c6.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
@@ -761,14 +761,18 @@
       
         <li class="md-nav__item">
   <a href="#generate-an-incremental-offline-package" class="md-nav__link">
-    Generate an incremental offline package
+    <span class="md-ellipsis">
+      Generate an incremental offline package
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#use-the-incremental-offline-package" class="md-nav__link">
-    Use the incremental offline package
+    <span class="md-ellipsis">
+      Use the incremental offline package
+    </span>
   </a>
   
 </li>
@@ -887,6 +891,26 @@
             Releases
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/v0.10.0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    V0.10.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -1688,6 +1712,26 @@
 
               
             
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/artifacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Artifacts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1723,14 +1767,18 @@
       
         <li class="md-nav__item">
   <a href="#generate-an-incremental-offline-package" class="md-nav__link">
-    Generate an incremental offline package
+    <span class="md-ellipsis">
+      Generate an incremental offline package
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#use-the-incremental-offline-package" class="md-nav__link">
-    Use the incremental offline package
+    <span class="md-ellipsis">
+      Use the incremental offline package
+    </span>
   </a>
   
 </li>
@@ -1754,7 +1802,7 @@
 
 
 <h1 id="generation-and-use-of-incremental-offline-packages">Generation and use of incremental offline packages<a class="headerlink" href="#generation-and-use-of-incremental-offline-packages" title="Permanent link">&para;</a></h1>
-<p>To meet users' needs for components of certain versions, Kubean provides the script <code>artifacts/offline_patch.py</code> to generate a corresponding version of offline packages based on the configuration file <code>manifest.yml</code>.</p>
+<p>To meet users' needs for components of certain versions, Kubean provides the script <code>artifacts/airgap_patch.py</code> to generate a corresponding version of offline packages based on the configuration file <code>manifest.yml</code>.</p>
 <h2 id="generate-an-incremental-offline-package">Generate an incremental offline package<a class="headerlink" href="#generate-an-incremental-offline-package" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
@@ -1789,7 +1837,7 @@
 <h2 id="use-the-incremental-offline-package">Use the incremental offline package<a class="headerlink" href="#use-the-incremental-offline-package" title="Permanent link">&para;</a></h2>
 <p>The directory structure of the incremental package is as follows:</p>
 <div class="highlight"><pre><span></span><code>data
-└── v_offline_patch
+└── airgap_patch
     ├── amd64
     │   ├── files
     │   │   ├── import_files.sh
@@ -1809,7 +1857,7 @@
 <ol>
 <li>
 <p>Write file data into MinIO</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>data/v_offline_patch/amd64/files
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>data/airgap_patch/amd64/files
 
 $<span class="w"> </span><span class="nv">MINIO_USER</span><span class="o">=</span><span class="si">${</span><span class="nv">username</span><span class="si">}</span><span class="w"> </span><span class="nv">MINIO_PASS</span><span class="o">=</span><span class="si">${</span><span class="nv">password</span><span class="si">}</span><span class="w"> </span>./import_files.sh<span class="w"> </span><span class="si">${</span><span class="nv">minio_address</span><span class="si">}</span>
 </code></pre></div>
@@ -1817,7 +1865,7 @@ $<span class="w"> </span><span class="nv">MINIO_USER</span><span class="o">=</sp
 </li>
 <li>
 <p>Write image data to the docker registry (recommended version 2.6.2) or harbor</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>data/v_offline_patch/amd64/images<span class="w"> </span>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>data/airgap_patch/amd64/images<span class="w"> </span>
 
 <span class="c1"># 1. Non-secure password-free mode</span>
 $<span class="w"> </span><span class="nv">DEST_TLS_VERIFY</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span>./import_images.sh<span class="w"> </span><span class="si">${</span><span class="nv">registry_address</span><span class="si">}</span>
@@ -1833,7 +1881,7 @@ $<span class="w"> </span><span class="nv">DEST_USER</span><span class="o">=</spa
 </li>
 <li>
 <p>Write <code>kubeanofflineversion.cr.patch.yaml</code> to the k8s cluster</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>data/v_offline_patch
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>data/airgap_patch
 $<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>kubeanofflineversion.cr.patch.yaml<span class="w"> </span>
 </code></pre></div>
 <blockquote>
@@ -1919,7 +1967,7 @@ $<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </
     <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.footer"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.81fa17fe.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
     
   <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
